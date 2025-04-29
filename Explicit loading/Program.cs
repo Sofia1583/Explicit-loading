@@ -27,11 +27,13 @@ using (ApplicationContext db = new ApplicationContext())
     Company? company = db.Companies.FirstOrDefault();
     if (company != null)
     {
-        db.Users.Where(u => u.CompanyId == company.Id).Load();
-
+        db.Users.Where(u => u.CompanyId == company.Id).Load();//загружает пользователей в контекст.
+        //загружаются только те пользователи, у которых свойство CompanyId соответствует
+        //свойству Id ранее полученной компании
         Console.WriteLine($"Company: {company.Name}");
         foreach (var u in company.Users)
             Console.WriteLine($"User: {u.Name}");
+        Console.WriteLine("----------------------");
     }
 }
 //с использованием метода Collection
@@ -46,6 +48,7 @@ using (ApplicationContext db = new ApplicationContext())
         foreach (var u in company.Users)
             Console.WriteLine($"User: {u.Name}");
     }
+    Console.WriteLine("----------------------");
 }
 //с использованием метода Reference
 using (ApplicationContext db = new ApplicationContext())
@@ -55,6 +58,7 @@ using (ApplicationContext db = new ApplicationContext())
     {
         db.Entry(user).Reference(u => u.Company).Load();
         Console.WriteLine($"{user.Name} - {user.Company?.Name}");   // Tom - Microsoft
+        Console.WriteLine("----------------------");
     }
 }
 //обращение с использованием Local
